@@ -386,7 +386,7 @@ class WikipediaPage(object):
       request = _wiki_request(query_params)
       html = request['query']['pages'][pageid]['revisions'][0]['*']
 
-      lis = BeautifulSoup(html).find_all('li')
+      lis = BeautifulSoup(html, 'html.parser').find_all('li')
       filtered_lis = [li for li in lis if not 'tocsection' in ''.join(li.get('class', []))]
       may_refer_to = [li.a.get_text() for li in filtered_lis if li.a]
 
@@ -626,11 +626,24 @@ class WikipediaPage(object):
         [link['title']
         for link in self.__continued_query({
           'prop': 'categories',
-          'cllimit': 'max'
+          'cllimit': 'max',
+		  'clshow': '!hidden'
         })
       ]]
 
     return self._categories
+
+  @property
+  def redirects(self):
+    '''
+	Get redirects to this page.
+	'''
+    if not getattr(self, '_redirects', False):
+      self._redirects = list()
+      for link in self.__continued_query({'prop': 'redirects','rdprop': 'title','rdlimit': '100'}):
+        self._redirects.append(link['title'])
+
+    return self._redirects
 
   @property
   def sections(self):
