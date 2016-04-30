@@ -420,8 +420,9 @@ class WikipediaPage(object):
         for datum in pages.values():  # in python 3.3+: "yield from pages.values()"
           yield datum
       else:
-        for datum in pages[self.pageid][prop]:
-          yield datum
+        if prop in pages[self.pageid]:
+          for datum in pages[self.pageid][prop]:
+            yield datum
 
       if 'continue' not in request:
         break
@@ -618,7 +619,7 @@ class WikipediaPage(object):
   @property
   def categories(self):
     '''
-    List of categories of a page.
+    List of non-hidden categories of a page.
     '''
 
     if not getattr(self, '_categories', False):
@@ -627,7 +628,7 @@ class WikipediaPage(object):
         for link in self.__continued_query({
           'prop': 'categories',
           'cllimit': 'max',
-		  'clshow': '!hidden'
+          'clshow': '!hidden'
         })
       ]]
 
@@ -636,8 +637,8 @@ class WikipediaPage(object):
   @property
   def redirects(self):
     '''
-	Get redirects to this page.
-	'''
+    Get redirects to this page.
+    '''
     if not getattr(self, '_redirects', False):
       self._redirects = list()
       for link in self.__continued_query({'prop': 'redirects','rdprop': 'title','rdlimit': '100'}):
