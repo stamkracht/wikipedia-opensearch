@@ -16,7 +16,7 @@ API_URL = 'http://en.wikipedia.org/w/api.php'
 RATE_LIMIT = False
 RATE_LIMIT_MIN_WAIT = None
 RATE_LIMIT_LAST_CALL = None
-USER_AGENT = 'wikipedia (https://github.com/goldsmith/Wikipedia/)'
+USER_AGENT = 'wikipedia (https://github.com/barrust/Wikipedia/)'
 
 
 def set_lang(prefix):
@@ -299,7 +299,7 @@ class WikipediaPage(object):
     self.__load(redirect=redirect, preload=preload)
 
     if preload:
-      for prop in ('content', 'summary', 'images', 'references', 'links', 'sections'):
+      for prop in ('content', 'summary', 'images', 'references', 'links', 'sections', 'redirects'):
         getattr(self, prop)
 
   def __repr__(self):
