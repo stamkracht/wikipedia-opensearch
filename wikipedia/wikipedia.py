@@ -316,6 +316,7 @@ def page(title=None, pageid=None, auto_suggest=True, redirect=True, preload=Fals
         raise PageError(title)
     return WikipediaPage(title, redirect=redirect, preload=preload)
   elif pageid is not None:
+    print 'we are using pageid'
     return WikipediaPage(pageid=pageid, preload=preload)
   else:
     raise ValueError("Either a title or a pageid must be specified")
@@ -430,8 +431,14 @@ class WikipediaPage(object):
       lis = BeautifulSoup(html, 'html.parser').find_all('li')
       filtered_lis = [li for li in lis if not 'tocsection' in ''.join(li.get('class', []))]
       may_refer_to = [li.a.get_text() for li in filtered_lis if li.a]
-
-      raise DisambiguationError(getattr(self, 'title', page['title']), may_refer_to)
+      disambiguation = list()
+      for lis_item in filtered_lis:
+        one_disambiguation = dict()
+        item = lis_item.find_all("a")[0]
+        one_disambiguation["title"] = item["title"]
+        one_disambiguation["description"] = lis_item.text
+        disambiguation.append(one_disambiguation)
+      raise DisambiguationError(getattr(self, 'title', page['title']), may_refer_to, disambiguation)
 
     else:
       self.pageid = pageid
