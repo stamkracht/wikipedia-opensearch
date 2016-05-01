@@ -4,8 +4,9 @@
 
 ### Version 1.4.1
 
-* Add WikipediaPage.redirects attribute.
-* Add html.parser to BeautifulSoup call to remove warning
+* Changed categories attribute to only return non-hidden categories
+* Add WikipediaPage.redirects attribute Fixes [#90](https://github.com/goldsmith/Wikipedia/issues/90)
+* Add html.parser to BeautifulSoup call to remove warning: Fixes [#107](https://github.com/goldsmith/Wikipedia/issues/107)
 * Add additional information to DisambiguationError similar to PR [#92](https://github.com/goldsmith/Wikipedia/pull/92)
 * Resolve redirect error when starting with pageid: Fixes [#118](https://github.com/goldsmith/Wikipedia/issues/118)
 * Resolve sections returning empty list when using either pageid or title: Fixes [#119](https://github.com/goldsmith/Wikipedia/issues/119) [#105](https://github.com/goldsmith/Wikipedia/issues/105) [#95](https://github.com/goldsmith/Wikipedia/issues/95) and [#77](https://github.com/goldsmith/Wikipedia/issues/77)
