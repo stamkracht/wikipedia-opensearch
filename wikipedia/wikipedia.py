@@ -118,6 +118,47 @@ def search(query, results=10, suggestion=False):
 
   return list(search_results)
 
+@cache
+def categorymembers(category, results=10, subcategories=True):
+  '''
+  Do a Wikipedia search for pages, and optionally sub-categories, that belong to a `category`.
+
+  Keyword arguments:
+
+  * results - the maxmimum number of results returned
+  * subcategories - if True, return pages and sub-categories (if any) in a tuple
+  '''
+
+  search_params = {
+    'list': 'categorymembers',
+    'cmprop': 'ids|title|type',
+    'cmtype': ('page|subcat' if subcategories else 'page'), # could also include files
+    'cmlimit': results,
+    'cmtitle': 'Category:' + query
+  }
+
+  raw_results = _wiki_request(search_params)
+
+  if 'error' in raw_results:
+    if raw_results['error']['info'] in ('HTTP request timed out.', 'Pool queue is full'):
+      raise HTTPTimeoutError(query)
+    else:
+      raise WikipediaException(raw_results['error']['info'])
+
+  pages = list()
+  subcats = list()
+  for d in raw_results['query']['categorymembers']:
+    if d['type'] == 'page':
+        pages.append(d['title'])
+    elif d['type'] == 'subcat':
+        tmp = d['title']
+        if tmp.startswith('Category:'):
+            tmp = tmp[9:]
+        subcats.append(tmp)
+  if subcategories:
+    return pages, subcats
+  else:
+    return pages
 
 @cache
 def geosearch(latitude, longitude, title=None, results=10, radius=1000):
