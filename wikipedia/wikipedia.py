@@ -470,9 +470,8 @@ class WikipediaPage(object):
         for datum in pages.values():  # in python 3.3+: "yield from pages.values()"
           yield datum
       else:
-        if prop in pages[self.pageid]:
-          for datum in pages[self.pageid][prop]:
-            yield datum
+        for datum in pages[self.pageid].get(prop, []):
+          yield datum
 
       if 'continue' not in request:
         break
