@@ -375,7 +375,7 @@ class WikipediaPage(object):
       query_params['pageids'] = self.pageid
 
     request = _wiki_request(query_params)
-
+    # print request
     query = request['query']
     pageid = list(query['pages'].keys())[0]
     page = query['pages'][pageid]
@@ -707,8 +707,11 @@ class WikipediaPage(object):
         'action': 'parse',
         'prop': 'sections',
       }
-      query_params.update(self.__title_query_param)
-
+      if not getattr(self, 'title', None):
+        print 'using pageid'
+        query_params['pageid'] = self.pageid
+      else:
+        query_params['page'] = self.title
       request = _wiki_request(query_params)
       self._sections = [section['line'] for section in request['parse']['sections']]
 
