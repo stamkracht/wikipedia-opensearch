@@ -2,6 +2,11 @@
 
 ## Current
 
+### Version 1.4.1
+
+* Add WikipediaPage.redirects attribute.
+* Add html.parser to BeautifulSoup call to remove warning
+
 ## Version 1.4
 
 * Test wikipdia library on Python v3.4. PR [#52](https://github.com/goldsmith/Wikipedia/pull/52) by [frewsxcv](https://github.com/frewsxcv)
