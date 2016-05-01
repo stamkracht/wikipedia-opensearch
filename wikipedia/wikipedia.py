@@ -134,7 +134,7 @@ def categorymembers(category, results=10, subcategories=True):
     'cmprop': 'ids|title|type',
     'cmtype': ('page|subcat' if subcategories else 'page'), # could also include files
     'cmlimit': results,
-    'cmtitle': 'Category:' + query
+    'cmtitle': 'Category:' + category
   }
 
   raw_results = _wiki_request(search_params)
