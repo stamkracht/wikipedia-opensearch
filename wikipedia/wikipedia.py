@@ -708,7 +708,6 @@ class WikipediaPage(object):
         'prop': 'sections',
       }
       if not getattr(self, 'title', None):
-        print 'using pageid'
         query_params['pageid'] = self.pageid
       else:
         query_params['page'] = self.title
