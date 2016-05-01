@@ -316,7 +316,6 @@ def page(title=None, pageid=None, auto_suggest=True, redirect=True, preload=Fals
         raise PageError(title)
     return WikipediaPage(title, redirect=redirect, preload=preload)
   elif pageid is not None:
-    print 'we are using pageid'
     return WikipediaPage(pageid=pageid, preload=preload)
   else:
     raise ValueError("Either a title or a pageid must be specified")
@@ -401,6 +400,9 @@ class WikipediaPage(object):
           from_title = normalized['to']
 
         else:
+          if not getattr(self, 'title', None):
+            self.title = redirects['from']
+            delattr(self, 'pageid')
           from_title = self.title
 
         assert redirects['from'] == from_title, ODD_ERROR_MESSAGE
