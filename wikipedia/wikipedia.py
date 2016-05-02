@@ -518,7 +518,7 @@ class WikipediaPage(object):
         'explaintext': '',
         'rvprop': 'ids'
       }
-      if not getattr(self, 'title', None) is None:
+      if getattr(self, 'title', None) is not None:
          query_params['titles'] = self.title
       else:
          query_params['pageids'] = self.pageid
@@ -572,7 +572,7 @@ class WikipediaPage(object):
         'explaintext': '',
         'exintro': '',
       }
-      if not getattr(self, 'title', None) is None:
+      if getattr(self, 'title', None) is not None:
          query_params['titles'] = self.title
       else:
          query_params['pageids'] = self.pageid
@@ -686,7 +686,7 @@ class WikipediaPage(object):
   @property
   def redirects(self):
     '''
-    Get redirects to this page.
+    List of all redirects to the page.
     '''
     if not getattr(self, '_redirects', False):
       self._redirects = list()

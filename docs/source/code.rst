@@ -29,6 +29,8 @@ Functions and Classes
 
   .. autofunction:: geosearch(latitude, longitude, title=None, results=10, radius=1000)
 
+  .. autofunction:: categorymembers(category, results=10, subcategories=True)
+
 .. autoclass:: wikipedia.WikipediaPage
   :members:
 
