@@ -16,7 +16,7 @@ API_URL = 'http://en.wikipedia.org/w/api.php'
 RATE_LIMIT = False
 RATE_LIMIT_MIN_WAIT = None
 RATE_LIMIT_LAST_CALL = None
-USER_AGENT = 'wikipedia (https://github.com/barrust/Wikipedia/)'
+USER_AGENT = 'wikipedia bot (https://github.com/barrust/Wikipedia/)'
 
 
 def set_lang(prefix):
