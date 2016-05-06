@@ -89,7 +89,8 @@ def search(query, results=10, suggestion=False):
     * results - the maxmimum number of results returned
     * suggestion - if True, return results and suggestion (if any) in a tuple
     '''
-
+    if query is None or query.strip() == '':
+        raise ValueError("Query must be specified")
     search_params = {
         'list': 'search',
         'srprop': '',
@@ -128,6 +129,8 @@ def categorymembers(category, results=10, subcategories=True):
     * results - the maxmimum number of results returned
     * subcategories - if True, return pages and sub-categories (if any) in a tuple
     '''
+    if category is None or category.strip() == '':
+        raise ValueError("Category must be specified")
 
     search_params = {
         'list': 'categorymembers',
@@ -177,6 +180,10 @@ def geosearch(latitude, longitude, title=None, results=10, radius=1000):
     * results - the maximum number of results returned
     * radius - Search radius in meters. The value must be between 10 and 10000
     '''
+    if latitude is None or latitude.strip() == '':
+        raise ValueError("Latitude must be specified")
+    if longitude is None or longitude.strip() == '':
+        raise ValueError("Longitude must be specified")
 
     search_params = {
         'list': 'geosearch',
@@ -210,6 +217,8 @@ def suggest(query):
     Get a Wikipedia search suggestion for `query`.
     Returns a string or None if no suggestion was found.
     '''
+    if query is None or query.strip() == '':
+        raise ValueError("Query must be specified")
 
     search_params = {
         'list': 'search',
@@ -237,6 +246,8 @@ def random(pages=1):
     * pages - the number of random pages returned (max of 10)
     '''
     #http://en.wikipedia.org/w/api.php?action=query&list=random&rnlimit=5000&format=jsonfm
+    if pages is None or pages < 1:
+        raise ValueError('Number of pages must be greater than 0')
     query_params = {
         'list': 'random',
         'rnnamespace': 0,
@@ -266,6 +277,9 @@ def summary(title, sentences=0, chars=0, auto_suggest=True, redirect=True):
     * auto_suggest - let Wikipedia find a valid page title for the query
     * redirect - allow redirection without raising RedirectError
     '''
+
+    if title is None or title.strip() == '':
+        raise ValueError('Summary title must be specified.')
 
     # use auto_suggest and redirect to get the correct article
     # also, use page's error checking to raise DisambiguationError if necessary
@@ -306,7 +320,7 @@ def page(title=None, pageid=None, auto_suggest=True, redirect=True, preload=Fals
     * preload - load content, summary, images, references, and links during initialization
     '''
 
-    if title is not None:
+    if title is not None and title.strip() != '':
         if auto_suggest:
             results, suggestion = search(title, results=1, suggestion=True)
             try:
@@ -340,7 +354,7 @@ class WikipediaPage(object):
         self.__load(redirect=redirect, preload=preload)
 
         if preload:
-            for prop in ('content', 'summary', 'images', 'references', 'links', 'sections', 'redirects'):
+            for prop in ('content', 'summary', 'images', 'references', 'links', 'sections', 'redirects', 'coordinates'):
                 getattr(self, prop)
 
     def __repr__(self):
@@ -375,7 +389,7 @@ class WikipediaPage(object):
             query_params['pageids'] = self.pageid
 
         request = _wiki_request(query_params)
-        # print request
+
         query = request['query']
         pageid = list(query['pages'].keys())[0]
         page = query['pages'][pageid]
@@ -781,6 +795,8 @@ def _wiki_request(params):
     '''
     global RATE_LIMIT_LAST_CALL
     global USER_AGENT
+    global RATE_LIMIT
+    global RATE_LIMIT_MIN_WAIT
 
     params['format'] = 'json'
     if not 'action' in params:
@@ -790,12 +806,9 @@ def _wiki_request(params):
         'User-Agent': USER_AGENT
     }
 
-    if RATE_LIMIT and RATE_LIMIT_LAST_CALL and \
-        RATE_LIMIT_LAST_CALL + RATE_LIMIT_MIN_WAIT > datetime.now():
-
+    if RATE_LIMIT and RATE_LIMIT_LAST_CALL and RATE_LIMIT_LAST_CALL + RATE_LIMIT_MIN_WAIT > datetime.now():
         # it hasn't been long enough since the last API call
         # so wait until we're in the clear to make the request
-
         wait_time = (RATE_LIMIT_LAST_CALL + RATE_LIMIT_MIN_WAIT) - datetime.now()
         time.sleep(int(wait_time.total_seconds()))
 
