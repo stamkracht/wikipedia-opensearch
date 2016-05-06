@@ -505,7 +505,6 @@ class WikipediaPage(object):
 
         .. warning:: This can get pretty slow on long pages.
         '''
-
         if not getattr(self, '_html', False):
             query_params = {
                 'prop': 'revisions',
@@ -525,7 +524,6 @@ class WikipediaPage(object):
         '''
         Plain text content of the page, excluding images, tables, and other data.
         '''
-
         if not getattr(self, '_content', False):
             query_params = {
                 'prop': 'extracts|revisions',
@@ -537,9 +535,9 @@ class WikipediaPage(object):
             else:
                  query_params['pageids'] = self.pageid
             request = _wiki_request(query_params)
-            self._content         = request['query']['pages'][self.pageid]['extract']
+            self._content     = request['query']['pages'][self.pageid]['extract']
             self._revision_id = request['query']['pages'][self.pageid]['revisions'][0]['revid']
-            self._parent_id     = request['query']['pages'][self.pageid]['revisions'][0]['parentid']
+            self._parent_id   = request['query']['pages'][self.pageid]['revisions'][0]['parentid']
 
         return self._content
 
@@ -554,7 +552,6 @@ class WikipediaPage(object):
         <http://en.wikipedia.org/wiki/Wikipedia:Revision>`_ for more
         information.
         '''
-
         if not getattr(self, '_revid', False):
             # fetch the content (side effect is loading the revid)
             self.content
@@ -567,9 +564,8 @@ class WikipediaPage(object):
         Revision ID of the parent version of the current revision of this
         page. See ``revision_id`` for more information.
         '''
-
         if not getattr(self, '_parentid', False):
-            # fetch the content (side effect is loading the revid)
+            # fetch the content (side effect is loading the parentid)
             self.content
 
         return self._parent_id
@@ -579,7 +575,6 @@ class WikipediaPage(object):
         '''
         Plain text summary of the page.
         '''
-
         if not getattr(self, '_summary', False):
             query_params = {
                 'prop': 'extracts',
@@ -601,18 +596,11 @@ class WikipediaPage(object):
         '''
         List of URLs of images on the page.
         '''
-
         if not getattr(self, '_images', False):
-            self._images = [
-                page['imageinfo'][0]['url']
-                for page in self.__continued_query({
-                    'generator': 'images',
-                    'gimlimit': 'max',
-                    'prop': 'imageinfo',
-                    'iiprop': 'url',
-                })
-                if 'imageinfo' in page
-            ]
+            self._images = list()
+            for page in self.__continued_query({'generator': 'images', 'gimlimit': 'max', 'prop': 'imageinfo', 'iiprop': 'url'}):
+                if 'imageinfo' in page:
+                    self._images.append(page['imageinfo'][0]['url'])
 
         return self._images
 
@@ -630,7 +618,7 @@ class WikipediaPage(object):
 
             request = _wiki_request(query_params)
 
-            if 'query' in request:
+            if 'query' in request and'coordinates' in  request['query']['pages'][self.pageid]:
                 coordinates = request['query']['pages'][self.pageid]['coordinates']
                 self._coordinates = (Decimal(coordinates[0]['lat']), Decimal(coordinates[0]['lon']))
             else:
@@ -644,18 +632,11 @@ class WikipediaPage(object):
         List of URLs of external links on a page.
         May include external links within page that aren't technically cited anywhere.
         '''
-
         if not getattr(self, '_references', False):
-            def add_protocol(url):
-                return url if url.startswith('http') else 'http:' + url
-
-            self._references = [
-                add_protocol(link['*'])
-                for link in self.__continued_query({
-                    'prop': 'extlinks',
-                    'ellimit': 'max'
-                })
-            ]
+            self._references = list()
+            for link in self.__continued_query({'prop': 'extlinks', 'ellimit': 'max'}):
+                url = link['*'] if link['*'].startswith('http') else 'http:' + link['*']
+                self._references.append(url)
 
         return self._references
 
@@ -666,16 +647,10 @@ class WikipediaPage(object):
 
         .. note:: Only includes articles from namespace 0, meaning no Category, User talk, or other meta-Wikipedia pages.
         '''
-
         if not getattr(self, '_links', False):
-            self._links = [
-                link['title']
-                for link in self.__continued_query({
-                    'prop': 'links',
-                    'plnamespace': 0,
-                    'pllimit': 'max'
-                })
-            ]
+            self._links = list()
+            for link in self.__continued_query({'prop': 'links', 'plnamespace': 0, 'pllimit': 'max'}):
+                self._links.append(link['title'])
 
         return self._links
 
@@ -684,16 +659,13 @@ class WikipediaPage(object):
         '''
         List of non-hidden categories of a page.
         '''
-
         if not getattr(self, '_categories', False):
-            self._categories = [re.sub(r'^Category:', '', x) for x in
-                [link['title']
-                for link in self.__continued_query({
-                    'prop': 'categories',
-                    'cllimit': 'max',
-                    'clshow': '!hidden'
-                })
-            ]]
+            self._categories = list()
+            for link in self.__continued_query({'prop': 'categories', 'cllimit': 'max', 'clshow': '!hidden'}):
+                if link['title'].startswith('Category:'):
+                    self._categories.append(link['title'][9:])
+                else:
+                    self._categories.append(link['title'])
 
         return self._categories
 
