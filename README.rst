@@ -47,21 +47,16 @@ Note: this library was designed for ease of use and simplicity, not for advanced
 Installation
 ------------
 
-To install Wikipedia, simply run:
+To install Wikipedia, simply the `repository on GitHub <https://github.com/barrust/Wikipedia>`__, then run from the folder:
 
 ::
 
-  $ pip install wikipedia
+  $ python setup.py install
 
 Wikipedia is compatible with Python 2.6+ (2.7+ to run unittest discover) and Python 3.3+.
 
 Documentation
 -------------
-
-Read the docs at https://wikipedia.readthedocs.org/en/latest/.
-
--  `Quickstart <https://wikipedia.readthedocs.org/en/latest/quickstart.html>`__
--  `Full API <https://wikipedia.readthedocs.org/en/latest/code.html>`__
 
 To run tests, clone the `repository on GitHub <https://github.com/barrust/Wikipedia>`__, then run:
 
