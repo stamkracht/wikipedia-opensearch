@@ -47,7 +47,7 @@ Note: this library was designed for ease of use and simplicity, not for advanced
 Installation
 ------------
 
-To install Wikipedia, simply the `repository on GitHub <https://github.com/barrust/Wikipedia>`__, then run from the folder:
+To install Wikipedia, simply clone the `repository on GitHub <https://github.com/barrust/Wikipedia>`__, then run from the folder:
 
 ::
 

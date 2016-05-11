@@ -25,11 +25,13 @@ Functions and Classes
 
   .. autofunction:: summary(query, sentences=0, chars=0, auto_suggest=True, redirect=True)
 
-  .. autofunction:: page
-
   .. autofunction:: geosearch(latitude, longitude, title=None, results=10, radius=1000)
 
   .. autofunction:: categorymembers(category, results=10, subcategories=True)
+
+  .. autofunction:: categorytree(category, depth=5)
+
+  .. autofunction:: page
 
 .. autoclass:: wikipedia.WikipediaPage
   :members:

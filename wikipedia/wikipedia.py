@@ -163,6 +163,56 @@ def categorymembers(category, results=10, subcategories=True):
         return pages
 
 @cache
+def categorytree(category, depth=5):
+    '''
+    Build a category tree for either a single category or a list of categories
+
+    Keyword arguments:
+
+    * depth - the maxmimum number of levels returned. < 0 for all levels
+
+    .. note:: Set depth to 0 to get the full tree
+
+    .. warning:: Very long running! Requires many calls to categorymembers; recommend setting rate limit before running.
+    '''
+
+    def __cat_tree_rec(cat, depth, tree, level):
+        ''' recursive function to build out the tree '''
+        tree[cat] = dict()
+        tree[cat]['depth'] = level
+        tree[cat]['sub-categories'] = dict()
+        tree[cat]['links'] = list()
+        tree[cat]['parent-categories'] = list()
+
+        cat_page = page('Category:{0}'.format(cat))
+        for p in cat_page.categories:
+             tree[cat]['parent-categories'].append(p)
+
+        cm = categorymembers(cat, 500, True)
+        for link in cm[0]:
+            tree[cat]['links'].append(link)
+
+        if depth > 0 and level >= depth:
+            for c in cm[1]:
+                tree[cat]['sub-categories'][c] = None
+        else:
+            for c in cm[1]:
+                __cat_tree_rec(c, depth, tree[cat]['sub-categories'], level + 1)
+        return
+
+    # make it simple to use both a list or a single category term
+    if type(category) is not list:
+        cats = [category]
+    else:
+        cats = category
+
+    results = dict()
+    for cat in cats:
+        __cat_tree_rec(cat, depth, results, 0)
+    return results
+
+
+@cache
 def geosearch(latitude, longitude, title=None, results=10, radius=1000):
     '''
     Do a wikipedia geo search for `latitude` and `longitude`

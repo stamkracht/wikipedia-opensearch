@@ -5,9 +5,9 @@ Quickstart
 
 Start using wikipedia for Python in less than 5 minutes! If you are looking for the the full developer API, see :ref:`api`.
 
-Begin by installing wikipedia::
+Begin by installing Wikipedia: simply clone the `repository on GitHub <https://github.com/barrust/Wikipedia>`__, then run from the folder:
 
-	$ pip install wikipedia
+  $ python setup.py install
 
 Now let's use search and suggestion.
 
