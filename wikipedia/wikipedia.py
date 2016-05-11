@@ -10,7 +10,6 @@ from .exceptions import (
     PageError, DisambiguationError, RedirectError, HTTPTimeoutError,
     WikipediaException, ODD_ERROR_MESSAGE)
 from .util import cache, stdout_encode, debug
-import re
 
 API_URL = 'http://en.wikipedia.org/w/api.php'
 RATE_LIMIT = False

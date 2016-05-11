@@ -4,6 +4,7 @@ import sys
 import functools
 
 def debug(fn):
+  """ debug decorator """
   def wrapper(*args, **kwargs):
     print(fn.__name__, 'called!')
     print(sorted(args), tuple(sorted(kwargs.items())))
@@ -14,7 +15,7 @@ def debug(fn):
 
 
 class cache(object):
-
+  """ query cache decorator """
   def __init__(self, fn):
     self.fn = fn
     self._cache = {}
@@ -35,6 +36,10 @@ class cache(object):
 
 # from http://stackoverflow.com/questions/3627793/best-output-type-and-encoding-practices-for-repr-functions
 def stdout_encode(u, default='UTF8'):
+  """
+  repr function encoding
+  http://stackoverflow.com/questions/3627793/best-output-type-and-encoding-practices-for-repr-functions
+  """
   encoding = sys.stdout.encoding or default
   if sys.version_info > (3, 0):
     return u.encode(encoding).decode(encoding)
