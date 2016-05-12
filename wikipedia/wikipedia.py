@@ -5,6 +5,7 @@ import time
 from bs4 import BeautifulSoup
 from datetime import datetime, timedelta
 from decimal import Decimal
+import __init__
 
 from .exceptions import (
     PageError, DisambiguationError, RedirectError, HTTPTimeoutError,
@@ -15,7 +16,8 @@ API_URL = 'http://en.wikipedia.org/w/api.php'
 RATE_LIMIT = False
 RATE_LIMIT_MIN_WAIT = None
 RATE_LIMIT_LAST_CALL = None
-USER_AGENT = 'wikipedia bot (https://github.com/barrust/Wikipedia/)'
+USER_AGENT = 'python-wikipedia/{0} (https://github.com/barrust/Wikipedia/) BOT'.format(__init__.__version__) 
+SESSION = None
 
 
 def set_lang(prefix):
@@ -48,8 +50,19 @@ def set_user_agent(user_agent_string):
     * user_agent_string - (string) a string specifying the User-Agent header
     '''
     global USER_AGENT
-    USER_AGENT = user_agent_string
 
+    USER_AGENT = user_agent_string
+    reset_session()
+
+def reset_session():
+    global SESSION
+    global USER_AGENT
+    print USER_AGENT
+    headers = {
+        'User-Agent': USER_AGENT
+    }
+    SESSION = requests.Session()
+    SESSION.headers.update(headers)
 
 def set_rate_limiting(rate_limit, min_wait=timedelta(milliseconds=50)):
     '''
@@ -820,17 +833,13 @@ def _wiki_request(params):
     Returns a parsed dict of the JSON response.
     '''
     global RATE_LIMIT_LAST_CALL
-    global USER_AGENT
     global RATE_LIMIT
     global RATE_LIMIT_MIN_WAIT
+    global SESSION
 
     params['format'] = 'json'
     if not 'action' in params:
         params['action'] = 'query'
-
-    headers = {
-        'User-Agent': USER_AGENT
-    }
 
     if RATE_LIMIT and RATE_LIMIT_LAST_CALL and RATE_LIMIT_LAST_CALL + RATE_LIMIT_MIN_WAIT > datetime.now():
         # it hasn't been long enough since the last API call
@@ -838,7 +847,10 @@ def _wiki_request(params):
         wait_time = (RATE_LIMIT_LAST_CALL + RATE_LIMIT_MIN_WAIT) - datetime.now()
         time.sleep(int(wait_time.total_seconds()))
 
-    r = requests.get(API_URL, params=params, headers=headers)
+    if SESSION is None:
+        reset_session()
+
+    r = SESSION.get(API_URL, params=params)
 
     if RATE_LIMIT:
         RATE_LIMIT_LAST_CALL = datetime.now()

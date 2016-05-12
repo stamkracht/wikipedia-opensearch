@@ -3,6 +3,7 @@ import codecs
 import os
 import re
 import setuptools
+from wikipedia import __init__
 
 
 def local_file(file):
@@ -17,16 +18,11 @@ install_reqs = [
   if line.strip() != ''
 ]
 
-version = re.search(
-  "^__version__ = \((\d+), (\d+), (\d+)\)$",
-  local_file('wikipedia/__init__.py').read(),
-  re.MULTILINE
-).groups()
 
 
 setuptools.setup(
   name = "wikipedia",
-  version = '.'.join(version),
+  version = __init__.__version__,
   author = "Tyler Barrus",
   author_email = "barrust@gmail.com",
   description = "Wikipedia API for Python (forked from https://github.com/goldsmith/Wikipedia)",
