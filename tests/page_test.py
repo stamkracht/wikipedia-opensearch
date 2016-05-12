@@ -8,6 +8,7 @@ from request_mock_data import mock_data
 
 # mock out _wiki_request
 def _wiki_request(params):
+  ''' _wiki_request override '''
   return mock_data["_wiki_request calls"][tuple(sorted(params.items()))]
 wikipedia._wiki_request = _wiki_request
 
@@ -81,6 +82,7 @@ class TestPage(unittest.TestCase):
   """Test the functionality of the rest of wikipedia.page."""
 
   def setUp(self):
+    ''' set up the pages to be used for the tests '''
     # shortest wikipedia articles with images and sections
     self.celtuce = wikipedia.page("Celtuce")
     self.cyclone = wikipedia.page("Tropical Depression Ten (2005)")

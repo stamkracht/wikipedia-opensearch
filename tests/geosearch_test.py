@@ -46,6 +46,7 @@ class TestSearchLoc(unittest.TestCase):
     )
 
   def test_geosearch_with_non_existing_title(self):
+    ''' Test the results when no title exists '''
     self.assertEqual(wikipedia.geosearch(
       Decimal('40.67693'), Decimal('117.23193'), title='Test'),
       mock_data['data']["great_wall_of_china.geo_seach_with_non_existing_article_name"]

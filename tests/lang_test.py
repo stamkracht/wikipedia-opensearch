@@ -8,5 +8,6 @@ class TestLang(unittest.TestCase):
   """Test the ability for wikipedia to change the language of the API being accessed."""
 
   def test_lang(self):
+    ''' ensure the url gets updated correctly '''
     wikipedia.set_lang("fr")
     self.assertEqual(wikipedia.API_URL, 'http://fr.wikipedia.org/w/api.php')

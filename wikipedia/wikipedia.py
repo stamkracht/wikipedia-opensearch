@@ -229,9 +229,9 @@ def geosearch(latitude, longitude, title=None, results=10, radius=1000):
     * results - the maximum number of results returned
     * radius - Search radius in meters. The value must be between 10 and 10000
     '''
-    if latitude is None or latitude.strip() == '':
+    if latitude is None or (type(latitude) != Decimal and latitude.strip() == ''):
         raise ValueError("Latitude must be specified")
-    if longitude is None or longitude.strip() == '':
+    if longitude is None or (type(longitude) != Decimal and longitude.strip() == ''):
         raise ValueError("Longitude must be specified")
 
     search_params = {
@@ -517,7 +517,7 @@ class WikipediaPage(object):
         query_params.update(self.__title_query_param)
 
         last_continue = dict()
-        prop = query_params.get('prop', None)
+        prop = query_params.get('prop')
 
         while True:
             params = query_params.copy()
