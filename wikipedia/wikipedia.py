@@ -251,7 +251,7 @@ def geosearch(latitude, longitude, title=None, results=10, radius=1000):
         else:
             raise WikipediaException(raw_results['error']['info'])
 
-    search_pages = raw_results['query'].get('pages', None)
+    search_pages = raw_results['query'].get('pages')
     if search_pages:
         search_results = (v['title'] for k, v in search_pages.items() if k != '-1')
     else:
@@ -416,7 +416,7 @@ class WikipediaPage(object):
                 and self.title == other.title
                 and self.url == other.url
             )
-        except:
+        except AttributeError as ex:
             return False
 
     def __load(self, redirect=True, preload=False):
@@ -543,6 +543,7 @@ class WikipediaPage(object):
 
     @property
     def __title_query_param(self):
+        ''' util function to determine which parameter method to use '''
         if getattr(self, 'title', None) is not None:
             return {'titles': self.title}
         else:

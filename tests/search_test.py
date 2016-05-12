@@ -9,7 +9,7 @@ from request_mock_data import mock_data
 
 # mock out _wiki_request
 class _wiki_request(object):
-
+  ''' _wiki_request override '''
   calls = defaultdict(int)
 
   @classmethod

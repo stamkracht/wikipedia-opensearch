@@ -6,6 +6,7 @@ import setuptools
 
 
 def local_file(file):
+  ''' open the desired file in utf-8 '''
   return codecs.open(
     os.path.join(os.path.dirname(__file__), file), 'r', 'utf-8'
   )

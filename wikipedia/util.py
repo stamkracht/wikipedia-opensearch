@@ -31,6 +31,7 @@ class cache(object):
     return ret
 
   def clear_cache(self):
+    ''' clear the cached data '''
     self._cache = {}
 
 
