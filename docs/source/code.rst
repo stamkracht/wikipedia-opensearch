@@ -46,6 +46,8 @@ Functions and Classes
 
 .. autofunction:: wikipedia.donate
 
+.. autofunction:: wikipedia.clear_cache
+
 Exceptions
 ==========
 

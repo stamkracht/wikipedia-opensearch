@@ -30,9 +30,14 @@ def set_lang(prefix):
     global API_URL
     API_URL = 'http://' + prefix.lower() + '.wikipedia.org/w/api.php'
 
-    for cached_func in (search, suggest, summary):
-        cached_func.clear_cache()
+    clear_cache()
 
+def clear_cache():
+    '''
+    Allow users to be able to clear the cached results if/when necessary
+    '''
+    for cached_func in (search, suggest, summary, categorymembers, geosearch):
+        cached_func.clear_cache()
 
 def set_user_agent(user_agent_string):
     '''
@@ -162,7 +167,6 @@ def categorymembers(category, results=10, subcategories=True):
     else:
         return pages
 
-@cache
 def categorytree(category, depth=5):
     '''
     Build a category tree for either a single category or a list of categories
