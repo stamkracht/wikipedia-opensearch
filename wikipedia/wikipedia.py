@@ -192,7 +192,7 @@ def categorytree(category, depth=5):
         for link in cm[0]:
             tree[cat]['links'].append(link)
 
-        if depth > 0 and level >= depth:
+        if level >= depth > 0:
             for c in cm[1]:
                 tree[cat]['sub-categories'][c] = None
         else:
