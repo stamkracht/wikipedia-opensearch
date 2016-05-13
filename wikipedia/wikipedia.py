@@ -16,7 +16,7 @@ API_URL = 'http://en.wikipedia.org/w/api.php'
 RATE_LIMIT = False
 RATE_LIMIT_MIN_WAIT = None
 RATE_LIMIT_LAST_CALL = None
-USER_AGENT = 'python-wikipedia/{0} (https://github.com/barrust/Wikipedia/) BOT'.format(__init__.__version__) 
+USER_AGENT = 'python-wikipedia/{0} (https://github.com/barrust/Wikipedia/) BOT'.format(__init__.__version__)
 SESSION = None
 
 
@@ -36,7 +36,7 @@ def set_lang(prefix):
 
 def clear_cache():
     '''
-    Allow users to be able to clear the cached results if/when necessary
+    Clear the cached results as necessary
     '''
     for cached_func in (search, suggest, summary, categorymembers, geosearch):
         cached_func.clear_cache()
@@ -55,9 +55,11 @@ def set_user_agent(user_agent_string):
     reset_session()
 
 def reset_session():
+    '''
+    Reset HTTP session
+    '''
     global SESSION
     global USER_AGENT
-    print USER_AGENT
     headers = {
         'User-Agent': USER_AGENT
     }
