@@ -2,15 +2,22 @@
 
 ## Current
 
+### Version 1.4.2
+
+* Added categorytree functionality
+* Added clear_cache function
+* Reuse requests sessions: Similar to PR [#64](https://github.com/goldsmith/Wikipedia/pull/64)
+
+
 ### Version 1.4.1
 
 * Changed categories attribute to only return non-hidden categories
-* Add WikipediaPage.redirects attribute Fixes [#90](https://github.com/goldsmith/Wikipedia/issues/90)
+* Add WikipediaPage.redirects attribute: Fixes [#90](https://github.com/goldsmith/Wikipedia/issues/90)
 * Add html.parser to BeautifulSoup call to remove warning: Fixes [#107](https://github.com/goldsmith/Wikipedia/issues/107)
 * Add additional information to DisambiguationError similar to PR [#92](https://github.com/goldsmith/Wikipedia/pull/92)
 * Resolve redirect error when starting with pageid: Fixes [#118](https://github.com/goldsmith/Wikipedia/issues/118)
 * Resolve sections returning empty list when using either pageid or title: Fixes [#119](https://github.com/goldsmith/Wikipedia/issues/119) [#105](https://github.com/goldsmith/Wikipedia/issues/105) [#95](https://github.com/goldsmith/Wikipedia/issues/95) and [#77](https://github.com/goldsmith/Wikipedia/issues/77)
-* Resolve missing properties in result: Fixes [#93](https://github.com/goldsmith/Wikipedia/issues/93) 
+* Resolve missing properties in result: Fixes [#93](https://github.com/goldsmith/Wikipedia/issues/93)
 
 
 ## Version 1.4
