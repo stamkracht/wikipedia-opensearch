@@ -5,18 +5,21 @@ import time
 from bs4 import BeautifulSoup
 from datetime import datetime, timedelta
 from decimal import Decimal
-import __init__
 
 from .exceptions import (
     PageError, DisambiguationError, RedirectError, HTTPTimeoutError,
     WikipediaException, ODD_ERROR_MESSAGE)
 from .util import cache, stdout_encode, debug
 
+def get_version():
+    ''' Return Version Number'''
+    return "1.4.2"
+
 API_URL = 'http://en.wikipedia.org/w/api.php'
 RATE_LIMIT = False
 RATE_LIMIT_MIN_WAIT = None
 RATE_LIMIT_LAST_CALL = None
-USER_AGENT = 'python-wikipedia/{0} (https://github.com/barrust/Wikipedia/) BOT'.format(__init__.__version__)
+USER_AGENT = 'python-wikipedia/{0} (https://github.com/barrust/Wikipedia/) BOT'.format(get_version())
 SESSION = None
 
 

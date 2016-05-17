@@ -3,7 +3,7 @@ import codecs
 import os
 import re
 import setuptools
-from wikipedia import __init__
+from wikipedia import get_version
 
 
 def local_file(file):
@@ -22,7 +22,7 @@ install_reqs = [
 
 setuptools.setup(
   name = "wikipedia",
-  version = __init__.__version__,
+  version = get_version(),
   author = "Tyler Barrus",
   author_email = "barrust@gmail.com",
   description = "Wikipedia API for Python (forked from https://github.com/goldsmith/Wikipedia)",
@@ -38,5 +38,6 @@ setuptools.setup(
     'License :: OSI Approved :: MIT License',
     'Programming Language :: Python',
     'Programming Language :: Python :: 3'
-  ]
+  ],
+  test_suite="tests"
 )

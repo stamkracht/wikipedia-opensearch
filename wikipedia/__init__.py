@@ -1,4 +1,4 @@
 from .wikipedia import *
 from .exceptions import *
 
-__version__ = "1.4.2"
+__version__ = get_version()
