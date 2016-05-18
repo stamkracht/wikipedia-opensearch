@@ -166,7 +166,7 @@ def categorymembers(category, results=10, subcategories=True):
 
     if 'error' in raw_results:
         if raw_results['error']['info'] in ('HTTP request timed out.', 'Pool queue is full'):
-            raise HTTPTimeoutError(query)
+            raise HTTPTimeoutError(search_params)
         else:
             raise WikipediaException(raw_results['error']['info'])
 
