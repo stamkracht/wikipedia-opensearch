@@ -129,6 +129,15 @@ mock_data = {
 
     (('gscoord', '40.67693|117.23193'), ('gslimit', 10), ('gsradius', 1000), ('list', 'geosearch'), ('titles', 'Test')):
     {'query': {'geosearch': []}},
+
+    (('action', 'opensearch'), ('formatversion', 1), ('limit', 10), ('redirects', 'resolve'), ('search', 'Floortje Dressing'), ('suggest', 1)):
+    ['Floortje Dressing', ['Floortje Dessing'], ["Floortje 'Flora' Dessing (born August 31, 1970 in Heemstede) is a Dutch radio and television presenter, producer and travel writer, best known for her various travel TV shows."], ['https://en.wikipedia.org/wiki/Floortje_Dessing']],
+
+    (('action', 'opensearch'), ('formatversion', 1), ('limit', 10), ('redirects', 'return'), ('search', 'gengis kan'), ('suggest', 1)):
+    ['gengis kan', ['Gengis Khan'], [''], ['https://nl.wikipedia.org/wiki/Gengis_Khan']],
+
+    ((u'action', u'opensearch'), (u'formatversion', 1), (u'limit', 10), (u'redirects', u'resolve'), (u'search', 'qmxjsudek'), (u'suggest', 1)):
+    ['qmxjsudek', [], [], []],
   },
 
   "data": {
@@ -184,5 +193,9 @@ mock_data = {
     "great_wall_of_china.geo_seach_with_existing_article_name": ['Great Wall of China'],
 
     "great_wall_of_china.geo_seach_with_non_existing_article_name": [],
+
+    "floortje": {'title': 'Floortje Dessing', 'summary': "Floortje 'Flora' Dessing (born August 31, 1970 in Heemstede) is a Dutch radio and television presenter, producer and travel writer, best known for her various travel TV shows.", 'url': 'https://en.wikipedia.org/wiki/Floortje_Dessing'},
+
+    "nl_gengis": {'title': 'Gengis Khan', 'summary': '', 'url': 'https://nl.wikipedia.org/wiki/Gengis_Khan'},
   }
 }

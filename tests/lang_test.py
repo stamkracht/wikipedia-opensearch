@@ -11,3 +11,5 @@ class TestLang(unittest.TestCase):
     ''' ensure the url gets updated correctly '''
     wikipedia.set_lang("fr")
     self.assertEqual(wikipedia.API_URL, 'http://fr.wikipedia.org/w/api.php')
+
+  # TODO: test if caches get cleared
