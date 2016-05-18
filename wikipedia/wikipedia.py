@@ -13,13 +13,13 @@ from .util import cache, stdout_encode, debug
 
 def get_version():
     ''' Return Version Number'''
-    return "1.4.2"
+    return "1.4.3"
 
 API_URL = 'http://en.wikipedia.org/w/api.php'
 RATE_LIMIT = False
 RATE_LIMIT_MIN_WAIT = None
 RATE_LIMIT_LAST_CALL = None
-USER_AGENT = 'python-wikipedia/{0} (https://github.com/barrust/Wikipedia/) BOT'.format(get_version())
+USER_AGENT = 'python-wikipedia-opensearch/{0} (https://github.com/stamkracht/wikipedia-opensearch/) BOT'.format(get_version())
 SESSION = None
 
 
@@ -438,7 +438,7 @@ class WikipediaPage(object):
                 and self.title == other.title
                 and self.url == other.url
             )
-        except AttributeError as ex:
+        except AttributeError:
             return False
 
     def __load(self, redirect=True, preload=False):
