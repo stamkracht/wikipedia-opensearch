@@ -43,7 +43,7 @@ def clear_cache():
     '''
     Clear the cached results as necessary
     '''
-    for cached_func in (search, suggest, summary, categorymembers, geosearch):
+    for cached_func in (opensearch, search, suggest, summary, categorymembers, geosearch):
         cached_func.clear_cache()
 
 
@@ -145,6 +145,59 @@ def search(query, results=10, suggestion=False):
             return list(search_results), None
 
     return list(search_results)
+
+
+@cache
+def opensearch(query, limit=10, suggest=True, redirects='resolve'):
+    '''
+    Do a Wikipedia search for `query`.
+
+    Keyword arguments:
+
+    * limit - the maxmimum number of results returned
+    * suggest - if True, return suggested pages as results
+    * redirects - 'resolve' for target pages as results, 'return' for redirect pages as results
+    '''
+    if query is None or query.strip() == '':
+        raise ValueError("Query must be specified")
+    search_params = {
+        'action': 'opensearch',
+        'formatversion': 1,
+        'search': query,
+        'limit': limit,
+        'suggest': int(suggest),
+        'redirects': redirects
+    }
+
+    raw_results = _wiki_request(search_params)
+
+    if 'error' in raw_results:
+        if raw_results['error']['info'] in ('HTTP request timed out.', 'Pool queue is full'):
+            raise HTTPTimeoutError(query)
+        else:
+            raise WikipediaException(raw_results['error']['info'])
+
+    try:
+        search_results = [
+            OpensearchResult(raw_results[1][i], raw_results[2][i], raw_results[3][i])
+            for i in range(len(raw_results[1]))]
+    except Exception as err:
+        raise WikipediaException(str(err))
+
+    return search_results
+
+
+class OpensearchResult(object):
+    def __init__(self, title, summary, url):
+        self.title = title
+        self.summary = summary
+        self.url = url
+
+    def __repr__(self):
+        return stdout_encode(u'<OpensearchResult \'{0}\'>'.format(self.title))
+
+    def to_page(self):
+        return WikipediaPage(title=self.title)
 
 
 @cache
