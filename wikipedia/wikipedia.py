@@ -11,6 +11,7 @@ from .exceptions import (
     WikipediaException, ODD_ERROR_MESSAGE)
 from .util import cache, stdout_encode, debug
 
+
 def get_version():
     ''' Return Version Number'''
     return "1.4.3"
@@ -37,12 +38,14 @@ def set_lang(prefix):
 
     clear_cache()
 
+
 def clear_cache():
     '''
     Clear the cached results as necessary
     '''
     for cached_func in (search, suggest, summary, categorymembers, geosearch):
         cached_func.clear_cache()
+
 
 def set_user_agent(user_agent_string):
     '''
@@ -57,6 +60,7 @@ def set_user_agent(user_agent_string):
     USER_AGENT = user_agent_string
     reset_session()
 
+
 def reset_session():
     '''
     Reset HTTP session
@@ -68,6 +72,7 @@ def reset_session():
     }
     SESSION = requests.Session()
     SESSION.headers.update(headers)
+
 
 def set_rate_limiting(rate_limit, min_wait=timedelta(milliseconds=50)):
     '''
@@ -141,6 +146,7 @@ def search(query, results=10, suggestion=False):
 
     return list(search_results)
 
+
 @cache
 def categorymembers(category, results=10, subcategories=True):
     '''
@@ -184,6 +190,7 @@ def categorymembers(category, results=10, subcategories=True):
         return pages, subcats
     else:
         return pages
+
 
 def categorytree(category, depth=5):
     '''
@@ -404,7 +411,6 @@ def page(title=None, pageid=None, auto_suggest=True, redirect=True, preload=Fals
         return WikipediaPage(pageid=pageid, preload=preload)
     else:
         raise ValueError("Either a title or a pageid must be specified")
-
 
 
 class WikipediaPage(object):
