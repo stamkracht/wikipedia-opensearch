@@ -29,14 +29,17 @@ def set_lang(prefix):
     Change the language of the API being requested.
     Set `prefix` to one of the two letter prefixes found on the `list of all Wikipedias <http://meta.wikimedia.org/wiki/List_of_Wikipedias>`_.
 
-    After setting the language, the cache for ``search``, ``suggest``, and ``summary`` will be cleared.
+    If the API endpoint is actually changed, function caches will be cleared.
 
     .. note:: Make sure you search for page titles in the language that you have set.
     '''
     global API_URL
-    API_URL = 'http://' + prefix.lower() + '.wikipedia.org/w/api.php'
+    new_url = 'http://' + prefix.lower() + '.wikipedia.org/w/api.php'
 
-    clear_cache()
+    if new_url != API_URL:
+        clear_cache()
+
+    API_URL = new_url
 
 
 def clear_cache():
