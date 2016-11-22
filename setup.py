@@ -3,7 +3,7 @@ import codecs
 import os
 import re
 import setuptools
-from wikipedia import get_version
+from wikipedia.version import get_version
 
 
 def local_file(file):

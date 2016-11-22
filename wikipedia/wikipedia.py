@@ -10,11 +10,8 @@ from .exceptions import (
     PageError, DisambiguationError, RedirectError, HTTPTimeoutError,
     WikipediaException, ODD_ERROR_MESSAGE)
 from .util import cache, stdout_encode, debug
+from .version import get_version
 
-
-def get_version():
-    ''' Return Version Number'''
-    return "1.4.3"
 
 API_URL = 'http://en.wikipedia.org/w/api.php'
 RATE_LIMIT = False
