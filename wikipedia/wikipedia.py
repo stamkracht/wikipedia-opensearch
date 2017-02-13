@@ -130,7 +130,7 @@ def search(query, results=10, suggestion=False):
 
     raw_results = _wiki_request(search_params)
 
-    if 'error' in raw_results:
+    if 'error' in raw_results and isinstance(raw_results['error'], dict):
         if raw_results['error']['info'] in ('HTTP request timed out.', 'Pool queue is full'):
             raise HTTPTimeoutError(query)
         else:
