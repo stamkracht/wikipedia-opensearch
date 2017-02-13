@@ -130,7 +130,7 @@ def search(query, results=10, suggestion=False):
 
     raw_results = _wiki_request(search_params)
 
-    if raw_results.get('error'):
+    if isinstance(raw_results, dict) and 'error' in raw_results:
         if raw_results['error']['info'] in ('HTTP request timed out.', 'Pool queue is full'):
             raise HTTPTimeoutError(query)
         else:
@@ -171,7 +171,7 @@ def opensearch(query, limit=10, suggest=True, redirects='resolve'):
 
     raw_results = _wiki_request(search_params)
 
-    if raw_results.get('error'):
+    if isinstance(raw_results, dict) and 'error' in raw_results:
         if raw_results['error']['info'] in ('HTTP request timed out.', 'Pool queue is full'):
             raise HTTPTimeoutError(query)
         else:
@@ -223,7 +223,7 @@ def categorymembers(category, results=10, subcategories=True):
 
     raw_results = _wiki_request(search_params)
 
-    if raw_results.get('error'):
+    if isinstance(raw_results, dict) and 'error' in raw_results:
         if raw_results['error']['info'] in ('HTTP request timed out.', 'Pool queue is full'):
             raise HTTPTimeoutError(search_params)
         else:
@@ -327,7 +327,7 @@ def geosearch(latitude, longitude, title=None, results=10, radius=1000):
 
     raw_results = _wiki_request(search_params)
 
-    if raw_results.get('error'):
+    if isinstance(raw_results, dict) and 'error' in raw_results:
         if raw_results['error']['info'] in ('HTTP request timed out.', 'Pool queue is full'):
             raise HTTPTimeoutError('{0}|{1}'.format(latitude, longitude))
         else:
